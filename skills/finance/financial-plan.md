@@ -111,12 +111,20 @@ Ask: **"What mode?"**
 - For every fund: latest 1yr/3yr/5yr rolling returns (not just trailing), expense ratio, AUM, managers, news
 - Verify each fund's SEBI category under current categorization framework
 - Check if any funds face forced merger/reclassification
-- For international funds: confirm current subscription status under SEBI overseas cap
+- **CRITICAL — INVESTABILITY CHECK (for EVERY fund, not just international):**
+  - Search web for "[fund name] subscription status [current year]" and "[fund name] SIP suspended"
+  - Confirm: SIP open? Lumpsum open? Any per-instalment caps?
+  - For international funds: confirm current subscription status under SEBI overseas cap (industry-wide $7B and per-AMC $1B limits). Many international FoFs have been closed since 2022-2024.
+  - For small-cap funds: check for per-transaction caps (e.g., Nippon Small Cap has Rs 50,000 per-instalment cap since Aug 2024)
+  - For any fund that was recently reopened: verify reopening is still in effect
+  - **If ANY recommended fund is closed to new SIP subscriptions, the plan CANNOT include it. Find an alternative.**
+  - Output: table with Fund | SIP Open | Lumpsum Open | Per-instalment Cap | Platform Verified | for every fund
 - Check if any funds' expense ratios exceed current TER limits
 - Verify each fund is Direct plan (flag any Regular plan holdings)
+- For FoF structures: compute all-in cost (fund ER + underlying fund/ETF ER). Verify underlying fund TER via web search.
 - For each non-MF instrument in fixed_income CSV: current rate, rule changes, tax treatment
 - Current USD/INR rate (if applicable)
-- Term insurance premiums for user's age/gender
+- Term insurance premiums for user's age/gender — search web for actual premium quotes, do not estimate
 - At least 2 independent sources for every regulatory fact. If sources conflict, use most recent.
 
 **Agent 3: Portfolio Simplification Analysis**
@@ -168,12 +176,14 @@ Create `plan/investment_plan_<quarter>_v<N>.md`. **Only include sections that ap
 21. **(if applicable) Estate Planning Checklist** — for NW > 1Cr: will, nominations audit, marriage implications
 
 **Critical rules:**
-- Tax sections: equity LTCG = Section 112A (1.25L exemption), gold FoF LTCG = Section 112 (NO exemption), debt = Section 50AA (slab rate). Verify per-fund structure before applying.
+- **INVESTABILITY GATE (MANDATORY):** Before including ANY fund in the plan, the research agent MUST have confirmed it is open for new SIP subscriptions. The plan MUST include an "Investability Verification" table showing SIP/lumpsum status for every recommended fund. No fund enters the plan without this verification. This check exists because SEBI restrictions, AMC caps, and per-instalment limits can make funds unpurchasable — and this has caused real plan failures (e.g., Navi Nasdaq 100 FoF was closed since March 2024 but included in plans through v4).
+- Tax sections: equity LTCG = Section 112A (1.25L exemption), gold FoF LTCG = Section 112 (NO exemption), **international FoF LTCG = Section 112 (NO exemption, 24-month holding)**, debt = Section 50AA (slab rate). Verify per-fund structure before applying. International FoFs investing in overseas equities are NOT equity-oriented under Indian tax law.
 - Platform-agnostic: use user's actual platform from profile. Don't assume Zerodha.
 - For deployment: parallel time-bound SIPs (auto-expire) over manual purchases.
 - Distinguish personal cost-basis returns from fund-level trailing returns everywhere.
-- Disclose all-in costs for FoF structures (fund ER + underlying).
+- Disclose all-in costs for FoF structures (fund ER + underlying). Verify underlying fund TER via web search — do not use stale data.
 - Enforce hard rules from profile BUT if a rule creates clear financial risk (zero emergency fund, extreme concentration, no insurance with dependents), follow the rule AND add an "Advisor Note" explaining the risk.
+- Insurance premiums: always search web for actual current quotes at user's age/gender. Do not estimate.
 - Fund selection must use rolling returns across market cycles, not just recent trailing.
 - Age-based allocation: if plan equity % exceeds computed ceiling from Step 2, flag in the plan with reasoning.
 
@@ -192,13 +202,14 @@ Create `plan/investment_plan_<quarter>_v<N>.md`. **Only include sections that ap
 - Output: numbered PASS/FAIL list
 
 **Agent B: Financial Strategy Review**
+- **Investability verification**: For every fund, independently search web to confirm SIP subscriptions are currently accepted AND check for per-instalment caps. This is a cross-check of Agent 2 and Agent C's work — three independent checks catch what one might miss.
 - Fund selection: search web, use rolling returns across cycles, not just trailing
 - Allocation vs computed risk capacity ceiling
 - Goal-based adequacy: will plan meet each goal's corpus need?
-- Insurance adequacy: term >= 10x income? Health sufficient? Critical illness?
+- Insurance adequacy: term >= 10x income? Health sufficient? Critical illness? **Verify premium estimates via web search.**
 - Sealed holdings: tax-loss harvesting opportunities?
 - Contingency: are tiers actionable? Health insurance premium included?
-- Operational feasibility: >10 actions in one period? Flag.
+- Operational feasibility: >10 actions in one period? Flag. Check per-instalment caps on all funds.
 - Inflation adjustment: are goal amounts in real or nominal terms?
 - Liquidity stress test: can user access 5L in 48 hours?
 - Missing risks?
@@ -207,11 +218,16 @@ Create `plan/investment_plan_<quarter>_v<N>.md`. **Only include sections that ap
 - Output: PASS/CONCERN/FAIL per check
 
 **Agent C: Tax & Regulatory Review**
-- Fund availability (SEBI restrictions, current subscription status)
-- Fund SEBI category compliance (2026 framework)
+- **CRITICAL — INDEPENDENT INVESTABILITY RE-VERIFICATION (must duplicate Agent 2's check independently):**
+  - For EVERY fund in the plan: search web to confirm SIP subscriptions are currently accepted
+  - Check for per-instalment caps, lumpsum restrictions, or recent suspension notices
+  - For international/overseas funds: verify SEBI overseas cap status — this is the #1 source of investability failures
+  - For FoFs: verify the underlying fund/ETF is also operational
+  - **This is a BLOCKING check. If any fund fails, mark as CRITICAL FAIL.**
+- Fund SEBI category compliance (current framework)
 - Index fund AMC availability and expense ratios on user's platform
 - All tax rates and exemptions (search web, 2+ sources each)
-- Per-fund tax classification: equity-oriented (>65%) vs non-equity vs FoF
+- Per-fund tax classification: equity-oriented (>65% domestic equity) vs non-equity vs FoF. **International FoFs are NOT equity-oriented** even if they invest 100% in equities — they must invest 65%+ in domestic Indian equities for Section 112A treatment.
 - Platform constraints (folio creation, SIP modification)
 - Insurance premium verification
 - Interest rates (PPF, EPF, NPS)
